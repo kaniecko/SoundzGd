@@ -31,7 +31,7 @@ band = Table(
    Column('band_name', String, nullable=False),
    Column('band_bio', String(250), nullable=False),
    Column('genre_id', Integer, nullable=False),
-   Column('song_id ', Integer, nullable=False),
+   Column('song_id', Integer, nullable=False),
 )
 genre = Table(
    'genre', meta,
@@ -54,10 +54,38 @@ def create_all_tables():
     meta.create_all(engine)
 
 # to make a new artist
-def create_artist(id, name, bio, user, passw, yt_link, a_email, g_id, is_band_lead, b_id):
+def create_artist(id, name, bio, user, passw, yt_link, a_email, g_id, is_band_lead, b_id, i_id):
         stmt = (
                 insert(artist).
-                values(artist_id=id, artist_name=name, artist_bio=bio, username=user, password=passw, youtube_link=yt_link, email=a_email, genre_id=g_id, band_lead=is_band_lead, band_id=b_id)
+                values(artist_id=id, artist_name=name, artist_bio=bio, username=user, password=passw, youtube_link=yt_link, email=a_email, genre_id=g_id, band_lead=is_band_lead, band_id=b_id, instrument_id=i_id)
+        )
+        conn.execute(stmt)
+
+def create_band(id, name, bio, g_id, s_id):
+        stmt = (
+                insert(band).
+                values(band_id=id, band_name=name, band_bio=bio, genre_id=g_id, song_id=s_id)
+        )
+        conn.execute(stmt)
+
+def create_song(id, name):
+        stmt = (
+                insert(song).
+                values(song_id=id, song_name=name)
+        )
+        conn.execute(stmt)
+
+def create_instrument(id, name):
+        stmt = (
+                insert(instrument).
+                values(instrument_id=id, instrument_name=name)
+        )
+        conn.execute(stmt)
+
+def create_genre(id, name):
+        stmt = (
+                insert(genre).
+                values(genre_id=id, genre_name=name)
         )
         conn.execute(stmt)
 
@@ -66,6 +94,7 @@ def get_all_artists():
         rows = conn.execute(select_command)
         return rows
 
+# artist check
 def is_artist(id):
         query = artist.select().where(artist.c.artist_id==id)
         rows = conn.execute(query).fetchall()
@@ -73,6 +102,19 @@ def is_artist(id):
                 return False
         else:
                 return True
+
+def get_artist_from_id(id):
+        str_sql = text("""select artist.artist_name, artist.artist_bio, artist.username, band.band_name, genre.genre_name, instrument.instrument_name, artist.youtube_link
+                     from artist 
+                     join band on band.band_id = artist.band_id
+                     join genre on genre.genre_id = artist.genre_id
+                     join instrument on instrument.instrument_id = artist.instrument_id
+                     where artist.artist_id = :a_id""")
+        rows = conn.execute(str_sql, a_id=id).fetchone()
+        array = []
+        for row in rows:
+                array.append(str(row))
+        return array
 
 #App routes
 
