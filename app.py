@@ -83,7 +83,9 @@ def index():
 
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+    member = ["John", "hey, I'm John- a pianist", "Johnpianio13", "Joe Shmo", "Jazz", "Piano", "youtube_link"]
+    member2 = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar", "https://www.youtube.com/watch?v=Zg5fmnrRzbg"]
+    return render_template('profile.html', member=member2)
 
 
 @app.route('/login')

@@ -14,25 +14,29 @@
               <div class="main-profile ">
                 <div class="row">
                   <div class="col-lg-4">
-                    <img src="../static/assets/images/profile1.png" alt="" style="border-radius: 23px;">
+                    <img src={{ "../static/assets/images/" + member[5] + ".png"}} alt="temp" style="border-radius: 23px;">
                   </div>
                   <div class="col-lg-4 align-self-center">
                     <div class="main-info header-text">
-                      <span>Offline</span>
-                        
-                      <h4>Alan Smithee</h4>
-                      <p>You Haven't Gone Live yet. Go Live By Touching The Button Below.</p>
+
+                        {% if member %}
+                        <span>{{ member[4] }}</span>
+                        <span>{{ member[5] }}</span>
+                        {% endif %}
+
+                      <h4>{{ member[0] }}</h4>
+                      <p>{{ member[1] }}</p>
                       <div class="main-border-button">
-                        <a href="#">Start Live Stream</a>
+                        <a href="#">Profile</a>
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-4 align-self-center">
                     <ul>
-                      <li>Games Downloaded <span>3</span></li>
-                      <li>Friends Online <span>16</span></li>
-                      <li>Live Streams <span>None</span></li>
-                      <li>Clips <span>29</span></li>
+                      <li>POG <span>3</span></li>
+                      <li>Example <span>16</span></li>
+                      <li>Testing <span>None</span></li>
+                      <li>Resume <span>29</span></li>
                     </ul>
                   </div>
                 </div>
@@ -42,14 +46,14 @@
                       <div class="row">
                         <div class="col-lg-12">
                           <div class="heading-section">
-                            <h4><em>Your Most Popular</em> Clips</h4>
+                            <h4><em>Your Most Popular</em> Videos</h4>
                           </div>
                         </div>
                         <div class="col-lg-3 col-sm-6">
                           <div class="item">
                             <div class="thumb">
                               <img src="../static/assets/images/clip-01.jpg" alt="" style="border-radius: 23px;">
-                              <a href="https:/www.youtube.com/watch?v=r1b03uKWk_M" target="_blank"><i class="fa fa-play"></i></a>
+                              <a href= {{ member[6] }} target="_blank"><i class="fa fa-play"></i></a>
                             </div>
                             <div class="down-content">
                               <h4>First Clip</h4>
@@ -166,8 +170,8 @@
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
-  <script src="../static/../static/assets/vendor/jquery/jquery.min.js"></script>
-  <script src="../static/../static/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../static/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../static/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 
   <script src="../static/assets/js/isotope.min.js"></script>
   <script src="../static/assets/js/owl-carousel.js"></script>
