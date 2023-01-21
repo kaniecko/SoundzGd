@@ -91,16 +91,72 @@ https://templatemo.com/tm-579-cyborg-gaming
         <div class="page-content">
 
           <!-- ***** Login Start ***** -->
-          <div>
+          <div class = "content-section">
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
-                {{ form.username }}
-                {{ form.password }}
-                {{ form.submit }}
-            </form>
+                <fieldset class="form-group">
+                    <h1 class="border-bottom mb-4">Create Band</h1>
+                    <div class="form-group">
+                        <h2>{{form.bandName.label(class="form-control-label") }}</h2>
+                        {{form.bandName(class="form-control form-control-lg") }}
+                    </div>
 
-            <p>Don't have an account?<a href="{{ url_for('register') }}">Sign Up</a></p>
-          </div>
+
+                    <div class="form-group">
+                        <h2>{{form.bandBio.label(class="form-control-label") }}</h2>
+
+                        {% if form.bandBio.errors %}
+                            {{form.bandBio(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.bandBio.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.bandBio(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group">
+                        <h2>{{form.genre.label(class="form-control-label") }}</h2>
+
+                        {% if form.genre.errors %}
+                            {{form.genre(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.genre.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.genre(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group">
+                        <h2>{{form.song.label(class="form-control-label") }}</h2>
+                        {% if form.song.errors %}
+                            {{form.song(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.song.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.song(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info")}}
+                </div>
+            </form>
+            <div class="border-top pt-3">
+
+            </div>
+        </div>
           <!-- ***** Login End ***** -->
 
         </div>
@@ -129,5 +185,4 @@ https://templatemo.com/tm-579-cyborg-gaming
   <script src="{{url_for('static', filename='assets/js/custom.js')}}"></script>
 
   </body>
-
 </html>
