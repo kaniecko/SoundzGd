@@ -1,18 +1,8 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
-from forms import RegistrationForm, LoginForm, BandForm
-from flask import Flask, render_template
-from sqlalchemy import create_engine, text
-from sqlalchemy import delete
-from sqlalchemy import insert
-from sqlalchemy import update
-from sqlalchemy import select
 from sqlalchemy import Table, Column, Integer, String, MetaData
+from sqlalchemy import create_engine, text
+from sqlalchemy import insert
+from forms import RegistrationForm, LoginForm, BandForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'irEALLYdONTkNOWwHATiAMdOING'
@@ -146,7 +136,7 @@ def profile():
     member = ["John", "hey, I'm John- a pianist", "Johnpianio13", "Joe Shmo", "Jazz", "Piano", "youtube_link"]
     member2 = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar", "https://www.youtube.com/embed/Zg5fmnrRzbg"]
     member4 = ['Lukas', 'Im a CS student using CockRoachDB!', 'Lukas123', 'Lukas Band', 'Country', 'Piano', 'https://www.youtube.com/embed/COnYtI6VP4A']
-    return render_template('profile.html', member=member4)
+    return render_template('profile.html', member=member2)
 
 
 

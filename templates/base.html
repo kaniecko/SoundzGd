@@ -28,7 +28,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
+                    <a href="{{ url_for('index') }}" class="logo">
                     <img src="../static/assets/images/logo.png" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
@@ -58,6 +58,8 @@
     </div>
   </header>
 <!-- ***** Header Area End ***** -->
+
+
 
 <body>
 {% block main %}
