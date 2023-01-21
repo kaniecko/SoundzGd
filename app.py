@@ -136,6 +136,26 @@ def get_artists_by_genre(genre_id):
         else:
                 return ()
 
+def is_unique_email(email):
+        str_sql = text("""select artist.email
+                     from artist
+                     where artist.email = :a_id""")
+        rows = conn.execute(str_sql, a_id=email).fetchall()
+        if rows is not None and len(rows) >= 1:
+                return False
+        else:
+                return True
+
+def is_unique_user(user):
+        str_sql = text("""select artist.username
+                     from artist
+                     where artist.username = :a_id""")
+        rows = conn.execute(str_sql, a_id=user).fetchall()
+        if rows is not None and len(rows) >= 1:
+                return False
+        else:
+                return True
+ 
 #App routes
 
 @app.route('/')
