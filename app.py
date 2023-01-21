@@ -17,13 +17,14 @@ artist = Table(
    Column('artist_id', Integer, primary_key = True, nullable=False),
    Column('artist_name', String, nullable=False),
    Column('artist_bio', String(250), nullable=False),
-   Column('username', String, nullable=False),
+   Column('username', String, nullable=False, unique=True),
    Column('password', String, nullable=False),
    Column('youtube_link', String, nullable=False),
    Column('email', String, nullable=False),
    Column('genre_id', Integer, nullable=False),
    Column('band_lead', Integer, nullable=False),
    Column('band_id', Integer, nullable=False),
+   Column('instrument_id', Integer, nullable=False),
 )
 band = Table(
    'band', meta,
@@ -116,7 +117,7 @@ def get_artist_from_id(id):
                 array.append(str(row))
         return array
 
-def get_artist_by_instrument(instrument_id):
+def get_artists_by_instrument(instrument_id):
         str_sql = text("""select artist.artist_name, artist.artist_id
                      from artist
                      where artist.instrument_id = :a_id""")
@@ -126,7 +127,7 @@ def get_artist_by_instrument(instrument_id):
         else:
                 return ()
 
-def get_artist_by_genre(genre_id):
+def get_artists_by_genre(genre_id):
         str_sql = text("""select artist.artist_name, artist.artist_id
                      from artist
                      where artist.genre = :a_id""")
