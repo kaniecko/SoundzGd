@@ -116,6 +116,26 @@ def get_artist_from_id(id):
                 array.append(str(row))
         return array
 
+def get_artist_by_instrument(instrument_id):
+        str_sql = text("""select artist.artist_name, artist.artist_id
+                     from artist
+                     where artist.instrument_id = :a_id""")
+        rows = conn.execute(str_sql, a_id=instrument_id).fetchone()
+        if rows is not None:
+                return rows
+        else:
+                return ()
+
+def get_artist_by_genre(genre_id):
+        str_sql = text("""select artist.artist_name, artist.artist_id
+                     from artist
+                     where artist.genre = :a_id""")
+        rows = conn.execute(str_sql, a_id=genre_id).fetchone()
+        if rows is not None:
+                return rows
+        else:
+                return ()
+
 #App routes
 
 @app.route('/')
