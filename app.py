@@ -10,6 +10,7 @@ from forms import RegistrationForm, LoginForm, BandForm
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'irEALLYdONTkNOWwHATiAMdOING'
 
+
 meta = MetaData()
 DATABASE_URL = DATABASE_URL = "postgresql://postgres:getinhere123@database-1.cwkdawbglnge.us-east-1.rds.amazonaws.com:5432/theactualdatabase12378"
 engine = create_engine(DATABASE_URL)
@@ -51,38 +52,6 @@ song = Table(
    Column('song_id', Integer, primary_key = True, nullable=False),
    Column('song_name', String, nullable=False),
 )
-
-def create_everything():
-        # just to create all tables initially
-        meta.create_all(engine)
-        create_artist(0,"sample_artist_name", "sample bio", "username", "password_reallygood", "", "sample@email.com", 0, 1, 0, 0)
-        create_band(0, "No_band_name", "No_band_bio", 0, 0)
-        create_song(0, "default_song")
-        create_instrument(0, "default_instrument")
-        create_genre(0, "default_genre")
-        create_artist(7, "Lukas", "Im a CS student using CockRoachDB!", "Lukas7", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(6, "Lukas", "Im a CS student using CockRoachDB!", "Lukas6", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(5, "Lukas", "Im a CS student using CockRoachDB!", "Lukas5", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(4, "Lukas", "Im a CS student using CockRoachDB!", "Lukas4", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(3, "Lukas", "Im a CS student using CockRoachDB!", "Lukas3", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(2, "Lukas", "Im a CS student using CockRoachDB!", "Lukas2", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(1, "Lukas", "Im a CS student using CockRoachDB!", "Lukas1", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_instrument(1, "Piano")
-        create_instrument(2, "Guitar")
-        create_instrument(3, "Drums")
-        create_instrument(4, "Vocals")
-        create_instrument(5, "Saxophone")
-        create_instrument(6, "Trumpet")
-        create_instrument(7, "Bass")
-        create_genre(1,"Country")
-        create_genre(2,"Jazz")
-        create_genre(3,"EDM")
-        create_genre(4,"POP")
-        create_genre(5,"Rock")
-        create_genre(6,"Classic")
-        create_genre(7,"R&B")
-        create_band(1, "Lukas Band", "This is a really cool band", 1, 1)
-        create_song(1, "Lukas song")
 
 # just to create all tables initially
 def create_all_tables():
@@ -201,11 +170,11 @@ def is_user_exists(user):
         else:
                 return False
 
-def validate_password(user, password):
+def validate_password(user, passw):
         str_sql = text("""select artist.artist_id
                      from artist
-                     where artist.username = :a_id && artist.password = :a_password""")
-        rows = conn.execute(str_sql, a_id=user, a_password=password).fetchone()
+                     where artist.username = :a_id and artist.password = :a_password""")
+        rows = conn.execute(str_sql, a_id=user, a_password=passw).fetchone()
         if rows is not None:
                 return rows[0]
         else:
@@ -345,18 +314,17 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
+
 @app.route('/profile')
 def profile():
-    #member3 = get_artist_from_id(7)
-    #print(member3)
     member = ["John", "hey, I'm John- a pianist", "Johnpianio13", "Joe Shmo", "Jazz", "Piano", "youtube_link"]
     member2 = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar", "https://www.youtube.com/embed/Zg5fmnrRzbg"]
     member4 = ['Lukas', 'Im a CS student using CockRoachDB!', 'Lukas123', 'Lukas Band', 'Country', 'Piano', 'https://www.youtube.com/embed/COnYtI6VP4A']
     
-    if "user" in session:
-        print("WHY AM I HERE")
-        user = session["user"]
-        return render_template('profile.html', member=user)
+    if "userid" in session:
+        user = session["userid"]
+        m = get_artist_from_id(user)
+        return render_template('profile.html', member=m)
     else:
         return redirect(url_for("login"))
 
@@ -377,12 +345,12 @@ def login():
     if(is_user_exists(username)):
         id = validate_password(username, upass)
         if(id != None):
-            session["username"] = username
+            session["userid"] = id
             return redirect(url_for("profile")) 
-        else:
-             return render_template('login.html', title='Login', form=form)
+        else:  
+            return render_template('login.html', title='Login', form=form)
     else:
-         return render_template('login.html', title='Login', form=form)
+        return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/createBand", methods=['GET', 'POST'])
