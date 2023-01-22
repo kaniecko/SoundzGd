@@ -128,6 +128,12 @@ https://templatemo.com/tm-579-cyborg-gaming
                             {{form.email(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
+
+                    <div class="form-group">
+                      <h2>{{form.fullname.label(class="form-control-label") }}</h2>
+                      {{form.fullname(class="form-control form-control-lg") }}
+                    </div>
+
                     <div class="form-group">
                         <h2>{{form.password.label(class="form-control-label") }}</h2>
                         {% if form.password.errors %}

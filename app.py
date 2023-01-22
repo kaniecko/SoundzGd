@@ -1,4 +1,5 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, session
+from flask_session import Session
 from sqlalchemy import Table, Column, Integer, String, MetaData
 from sqlalchemy import create_engine, text
 from sqlalchemy import insert
@@ -273,6 +274,9 @@ def index():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        #def create_artist(id, name, bio, user, passw, yt_link, a_email, g_id, is_band_lead, b_id, i_id)
+        newID = get_new_artist_id()
+        create_artist(newID, form.fullname.data, "", form.username.data, form.password.data, "", form.email.data, "", )
         flash(f'Account created for {form.fullname.data}!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
@@ -294,9 +298,29 @@ def band():
     band_members = get_band_members(1)
     print(band_members)
     return render_template('band.html', band_info=band_info, band_members=band_members)
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    username = form.username.data
+    upass = form.password.data
+
+    if(is_user_exists(username)):
+        print("Past 1!!!")
+        id = validate_password(username, upass)
+        print("Past 2!!!")
+        if(id != None):
+            session["username"] = username
+            return redirect(url_for("profile")) 
+        else:
+             return render_template('login.html', title='Login', form=form)
+    else:
+         return render_template('login.html', title='Login', form=form)
+
+
+
+
+
     #if form.validate_on_submit():
        # if form.username.data #if found in database
           #  return redirect(url_for('home'))

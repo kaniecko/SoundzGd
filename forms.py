@@ -1,18 +1,15 @@
 from operator import length_hint
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField,RadioField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
 
 class RegistrationForm(FlaskForm):
     fullname = StringField('Full Name', validators=[DataRequired(), Length(min=2, max=20)])
-
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20), Regexp(r'^[\w.@+-]+$')])
     email = StringField('Email', validators=[DataRequired(), Email()])
-
+    genre = RadioField('Genre', choices=[('1','N/A'),('2','Country'),('3','EDM/Dance'),('4','Pop'),('5','Rock'),('6','Classical'),('7','R&B')])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-
     submit = SubmitField('Sign Up')
 
 class LoginForm(FlaskForm):
