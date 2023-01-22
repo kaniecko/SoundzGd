@@ -197,6 +197,50 @@ def get_new_artist_id():
         return new_artist_id
 
 
+
+def update_artist_bio(id, bio):
+        if is_artist(id) == False:
+                return False
+        else:
+                stmt = (
+                        update(artist).
+                        where(artist.c.artist_id == id).
+                        values(artist_bio=bio)
+                )
+                conn.execute(stmt)
+                return True
+
+def is_band(id):
+        query = band.select().where(band.c.band_id==id)
+        rows = conn.execute(query).fetchall()
+        if len(rows) == 0:
+                return False
+        else:
+                return True
+
+def update_band_bio(id, bio):
+        if is_band(id) == False:
+                return False
+        else:
+                stmt = (
+                        update(band).
+                        where(band.c.band_id == id).
+                        values(band_bio=bio)
+                )
+                conn.execute(stmt)
+                return True
+
+def get_new_band_id():
+        str_sql = text("""select count(band.band_id)
+                     from band""")
+        row = conn.execute(str_sql).fetchone()
+        new_band_id = row[0]
+        while is_band(new_band_id):
+                new_band_id+=1
+        return new_band_id
+
+
+
 #App routes
 
 @app.route('/')
