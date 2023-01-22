@@ -52,42 +52,6 @@ song = Table(
    Column('song_name', String, nullable=False),
 )
 
-def create_everything():
-        # just to create all tables initially
-        meta.create_all(engine)
-        create_artist(0,"sample_artist_name", "sample bio", "username", "password_reallygood", "", "sample@email.com", 0, 1, 0, 0)
-        create_band(0, "No_band_name", "No_band_bio", 0, 0)
-        create_song(0, "default_song")
-        create_instrument(0, "default_instrument")
-        create_genre(0, "default_genre")
-        create_artist(7, "Lukas", "Im a CS student using CockRoachDB!", "Lukas7", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(6, "Lukas", "Im a CS student using CockRoachDB!", "Lukas6", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(5, "Lukas", "Im a CS student using CockRoachDB!", "Lukas5", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(4, "Lukas", "Im a CS student using CockRoachDB!", "Lukas4", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(3, "Lukas", "Im a CS student using CockRoachDB!", "Lukas3", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(2, "Lukas", "Im a CS student using CockRoachDB!", "Lukas2", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_artist(1, "Lukas", "Im a CS student using CockRoachDB!", "Lukas1", "BestSecurity", "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s&ab_channel=RickAstley", "sample@example.com", 1, 1, 1, 1)
-        create_instrument(1, "Piano")
-        create_instrument(2, "Guitar")
-        create_instrument(3, "Drums")
-        create_instrument(4, "Vocals")
-        create_instrument(5, "Saxophone")
-        create_instrument(6, "Trumpet")
-        create_instrument(7, "Bass")
-        create_genre(1,"Country")
-        create_genre(2,"Jazz")
-        create_genre(3,"EDM")
-        create_genre(4,"POP")
-        create_genre(5,"Rock")
-        create_genre(6,"Classic")
-        create_genre(7,"R&B")
-        create_band(1, "Lukas Band", "This is a really cool band", 1, 1)
-        create_song(1, "Lukas song")
-
-# just to create all tables initially
-def create_all_tables():
-    meta.create_all(engine)
-
 # to make a new artist
 def create_artist(id, name, bio, user, passw, yt_link, a_email, g_id, is_band_lead, b_id, i_id):
         stmt = (
