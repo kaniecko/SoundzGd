@@ -287,6 +287,15 @@ def username_to_artist_id(user):
         row = conn.execute(str_sql, u=user).fetchone()
         return row[0]
 
+def bandname_to_band_id(b_name):
+        str_sql = text("""select band.band_id
+                        from band
+                        where band_name = :name
+                        """)
+        row = conn.execute(str_sql, name=b_name).fetchone()
+        return row[0]
+
+
 #App routes
 
 @app.route('/')
