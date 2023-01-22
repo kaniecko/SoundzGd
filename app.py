@@ -157,11 +157,15 @@ def profile():
     member = ["John", "hey, I'm John- a pianist", "Johnpianio13", "Joe Shmo", "Jazz", "Piano", "youtube_link"]
     member2 = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar", "https://www.youtube.com/embed/Zg5fmnrRzbg"]
     member4 = ['Lukas', 'Im a CS student using CockRoachDB!', 'Lukas123', 'Lukas Band', 'Country', 'Piano', 'https://www.youtube.com/embed/COnYtI6VP4A']
-    return render_template('profile.html', member=member2)
+    return render_template('profile.html', member=member4)
 
 
-
-
+@app.route('/band/')
+def band():
+    band_info = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar",
+               "https://www.youtube.com/embed/Zg5fmnrRzbg"]
+    band_members = [["Guitar", "Person1"], ["Bass", "Person2"], ["Trumpet", "Person3"], ["Piano", "Person4"], ["Sax", "Person5"], ["Vocals", "Person6"]]
+    return render_template('band.html', band_info=band_info, band_members=band_members)
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
