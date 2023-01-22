@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, session
 from sqlalchemy import Table, Column, Integer, String, MetaData
 from sqlalchemy import create_engine, text
 from sqlalchemy import insert
@@ -339,6 +339,9 @@ def index():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        #def create_artist(id, name, bio, user, passw, yt_link, a_email, g_id, is_band_lead, b_id, i_id)
+        newID = get_new_artist_id()
+        create_artist(newID, form.fullname.data, "", form.username.data, form.password.data, "", form.email.data, "", form.genre.data, 0, 0, form.instrument.data)
         flash(f'Account created for {form.fullname.data}!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
@@ -350,8 +353,13 @@ def profile():
     member = ["John", "hey, I'm John- a pianist", "Johnpianio13", "Joe Shmo", "Jazz", "Piano", "youtube_link"]
     member2 = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar", "https://www.youtube.com/embed/Zg5fmnrRzbg"]
     member4 = ['Lukas', 'Im a CS student using CockRoachDB!', 'Lukas123', 'Lukas Band', 'Country', 'Piano', 'https://www.youtube.com/embed/COnYtI6VP4A']
-    return render_template('profile.html', member=member4)
-
+    
+    if "user" in session:
+        print("WHY AM I HERE")
+        user = session["user"]
+        return render_template('profile.html', member=user)
+    else:
+        return redirect(url_for("login"))
 
 @app.route('/band/')
 def band():
@@ -360,15 +368,22 @@ def band():
     band_members = get_band_members(1)
     print(band_members)
     return render_template('band.html', band_info=band_info, band_members=band_members)
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    #if form.validate_on_submit():
-       # if form.username.data #if found in database
-          #  return redirect(url_for('home'))
-        #else:
-         #   flash('Login Unsuccessful. Please check username or password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    username = form.username.data
+    upass = form.password.data
+
+    if(is_user_exists(username)):
+        id = validate_password(username, upass)
+        if(id != None):
+            session["username"] = username
+            return redirect(url_for("profile")) 
+        else:
+             return render_template('login.html', title='Login', form=form)
+    else:
+         return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/createBand", methods=['GET', 'POST'])
