@@ -155,7 +155,48 @@ def is_unique_user(user):
                 return False
         else:
                 return True
- 
+
+def is_user_exists(user):
+        str_sql = text("""select artist.username
+                     from artist
+                     where artist.username = :a_id""")
+        rows = conn.execute(str_sql, a_id=user).fetchall()
+        if len(rows) >= 1:
+                return True
+        else:
+                return False
+
+def validate_password(user, password):
+        str_sql = text("""select artist.artist_id
+                     from artist
+                     where artist.username = :a_id && artist.password = :a_password""")
+        rows = conn.execute(str_sql, a_id=user, a_password=password).fetchone()
+        if rows is not None:
+                return rows[0]
+        else:
+                return None
+
+def is_bandname_unique(b_name):
+        str_sql = text("""select band.band_name
+                     from band
+                     where band.band_name = :name""")
+        rows = conn.execute(str_sql, name=b_name).fetchall()
+        if len(rows) >= 1:
+                return False
+        else:
+                return True
+         
+
+def get_new_artist_id():
+        str_sql = text("""select count(artist.artist_id)
+                     from artist""")
+        row = conn.execute(str_sql).fetchone()
+        new_artist_id = row[0]
+        while is_artist(new_artist_id):
+                new_artist_id+=1
+        return new_artist_id
+
+
 #App routes
 
 @app.route('/')
