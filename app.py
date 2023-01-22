@@ -12,7 +12,8 @@ app.config['SECRET_KEY'] = 'irEALLYdONTkNOWwHATiAMdOING'
 
 meta = MetaData()
 DATABASE_URL = "cockroachdb://lukas:8S5jNP4SEeQyNThMB2xPvA@ninth-warrior-8275.7tt.cockroachlabs.cloud:26257/SoundzGd?sslmode=verify-full"
-engine = create_engine(DATABASE_URL)
+#engine = create_engine(DATABASE_URL)
+engine = create_engine("sqlite://")
 conn = engine.connect()
 artist = Table(
    'artist', meta,
