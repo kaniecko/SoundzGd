@@ -240,6 +240,23 @@ def get_new_band_id():
         return new_band_id
 
 
+def get_band_members(id):
+        if is_band(id) == False:
+                return None
+        str_sql = text("""select artist.username, instrument.instrument_name
+                        from artist
+                        join instrument on instrument.instrument_id = artist.instrument_id
+                        where artist.band_id = :b_id""")
+        rows = conn.execute(str_sql, b_id=id).fetchall()
+        band_members = []
+        for row in rows:
+                member_info = []
+                member_info.append(row[0])
+                member_info.append(row[1])
+                band_members.append(member_info)
+        return band_members
+
+
 
 #App routes
 
