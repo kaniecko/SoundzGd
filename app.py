@@ -11,9 +11,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'irEALLYdONTkNOWwHATiAMdOING'
 
 meta = MetaData()
-DATABASE_URL = "cockroachdb://lukas:8S5jNP4SEeQyNThMB2xPvA@ninth-warrior-8275.7tt.cockroachlabs.cloud:26257/SoundzGd?sslmode=verify-full"
-#engine = create_engine(DATABASE_URL)
-engine = create_engine("sqlite://")
+DATABASE_URL = DATABASE_URL = "postgresql://postgres:getinhere123@database-1.cwkdawbglnge.us-east-1.rds.amazonaws.com:5432/theactualdatabase12378"
+engine = create_engine(DATABASE_URL)
 conn = engine.connect()
 artist = Table(
    'artist', meta,
