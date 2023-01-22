@@ -2,6 +2,9 @@ from flask import Flask, render_template, flash, redirect, url_for
 from sqlalchemy import Table, Column, Integer, String, MetaData
 from sqlalchemy import create_engine, text
 from sqlalchemy import insert
+from sqlalchemy import delete
+from sqlalchemy import update
+from sqlalchemy import select
 from forms import RegistrationForm, LoginForm, BandForm
 
 app = Flask(__name__)
