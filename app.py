@@ -248,7 +248,7 @@ def get_new_band_id():
 def get_band_members(id):
         if is_band(id) == False:
                 return None
-        str_sql = text("""select artist.username, instrument.instrument_name, artist.youtube_link
+        str_sql = text("""select artist.username, instrument.instrument_name, artist.youtube_link, artist.band_lead
                         from artist
                         join instrument on instrument.instrument_id = artist.instrument_id
                         where artist.band_id = :b_id""")
@@ -259,8 +259,26 @@ def get_band_members(id):
                 member_info.append(row[0])
                 member_info.append(row[1])
                 member_info.append(row[2])
+                member_info.append(row[3])
                 band_members.append(member_info)
         return band_members
+
+def get_band_info(id):
+        if is_band(id) == False:
+                return None
+        str_sql = text("""select band.band_name, band.band_bio, genre.genre_name, song.song_name
+                        from band
+                        join genre on genre.genre_id = band.genre_id
+                        join song on song.song_id = band.song_id
+                        where band.band_id = :b_id""")
+        row = conn.execute(str_sql, b_id=id).fetchone()
+        info = []
+        info.append(row[0])
+        info.append(row[1])
+        info.append(row[2])
+        info.append(row[3])
+        return info
+        
 
 
 #App routes
