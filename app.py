@@ -165,11 +165,11 @@ def is_user_exists(user):
         else:
                 return False
 
-def validate_password(user, password):
+def validate_password(user, passw):
         str_sql = text("""select artist.artist_id
                      from artist
-                     where artist.username = :a_id && artist.password = :a_password""")
-        rows = conn.execute(str_sql, a_id=user, a_password=password).fetchone()
+                     where artist.username = :a_id and artist.password = :a_password""")
+        rows = conn.execute(str_sql, a_id=user, a_password=passw).fetchone()
         if rows is not None:
                 return rows[0]
         else:
