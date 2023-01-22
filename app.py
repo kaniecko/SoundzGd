@@ -214,8 +214,10 @@ def update_artist_bio(id, bio):
                 return True
 
 def is_band(id):
-        query = band.select().where(band.c.band_id==id)
-        rows = conn.execute(query).fetchall()
+        str_sql = text("""select band.band_id
+                     from band
+                     where band.band_id = :b_id""")
+        rows = conn.execute(str_sql, b_id=id).fetchall()
         if len(rows) == 0:
                 return False
         else:
