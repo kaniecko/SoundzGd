@@ -136,6 +136,128 @@ def get_artists_by_genre(genre_id):
         else:
                 return ()
 
+def is_unique_email(email):
+        str_sql = text("""select artist.email
+                     from artist
+                     where artist.email = :a_id""")
+        rows = conn.execute(str_sql, a_id=email).fetchall()
+        if rows is not None and len(rows) >= 1:
+                return False
+        else:
+                return True
+
+def is_unique_user(user):
+        str_sql = text("""select artist.username
+                     from artist
+                     where artist.username = :a_id""")
+        rows = conn.execute(str_sql, a_id=user).fetchall()
+        if rows is not None and len(rows) >= 1:
+                return False
+        else:
+                return True
+
+def is_user_exists(user):
+        str_sql = text("""select artist.username
+                     from artist
+                     where artist.username = :a_id""")
+        rows = conn.execute(str_sql, a_id=user).fetchall()
+        if len(rows) >= 1:
+                return True
+        else:
+                return False
+
+def validate_password(user, password):
+        str_sql = text("""select artist.artist_id
+                     from artist
+                     where artist.username = :a_id && artist.password = :a_password""")
+        rows = conn.execute(str_sql, a_id=user, a_password=password).fetchone()
+        if rows is not None:
+                return rows[0]
+        else:
+                return None
+
+def is_bandname_unique(b_name):
+        str_sql = text("""select band.band_name
+                     from band
+                     where band.band_name = :name""")
+        rows = conn.execute(str_sql, name=b_name).fetchall()
+        if len(rows) >= 1:
+                return False
+        else:
+                return True
+         
+
+def get_new_artist_id():
+        str_sql = text("""select count(artist.artist_id)
+                     from artist""")
+        row = conn.execute(str_sql).fetchone()
+        new_artist_id = row[0]
+        while is_artist(new_artist_id):
+                new_artist_id+=1
+        return new_artist_id
+
+
+
+def update_artist_bio(id, bio):
+        if is_artist(id) == False:
+                return False
+        else:
+                stmt = (
+                        update(artist).
+                        where(artist.c.artist_id == id).
+                        values(artist_bio=bio)
+                )
+                conn.execute(stmt)
+                return True
+
+def is_band(id):
+        query = band.select().where(band.c.band_id==id)
+        rows = conn.execute(query).fetchall()
+        if len(rows) == 0:
+                return False
+        else:
+                return True
+
+def update_band_bio(id, bio):
+        if is_band(id) == False:
+                return False
+        else:
+                stmt = (
+                        update(band).
+                        where(band.c.band_id == id).
+                        values(band_bio=bio)
+                )
+                conn.execute(stmt)
+                return True
+
+def get_new_band_id():
+        str_sql = text("""select count(band.band_id)
+                     from band""")
+        row = conn.execute(str_sql).fetchone()
+        new_band_id = row[0]
+        while is_band(new_band_id):
+                new_band_id+=1
+        return new_band_id
+
+
+def get_band_members(id):
+        if is_band(id) == False:
+                return None
+        str_sql = text("""select artist.username, instrument.instrument_name
+                        from artist
+                        join instrument on instrument.instrument_id = artist.instrument_id
+                        where artist.band_id = :b_id""")
+        rows = conn.execute(str_sql, b_id=id).fetchall()
+        band_members = []
+        for row in rows:
+                member_info = []
+                member_info.append(row[0])
+                member_info.append(row[1])
+                band_members.append(member_info)
+        return band_members
+
+
+
 #App routes
 
 @app.route('/')
