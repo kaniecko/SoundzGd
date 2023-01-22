@@ -279,7 +279,13 @@ def get_band_info(id):
         info.append(row[3])
         return info
         
-
+def username_to_artist_id(user):
+        str_sql = text("""select artist.artist_id
+                        from artist
+                        where username = :u
+                        """)
+        row = conn.execute(str_sql, u=user).fetchone()
+        return row[0]
 
 #App routes
 
