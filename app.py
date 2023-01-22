@@ -289,7 +289,8 @@ def profile():
 def band():
     band_info = ["James", "hey, I'm James- a guitarist", "James231", "Joe Shmo", "Jazz", "Guitar",
                "https://www.youtube.com/embed/Zg5fmnrRzbg"]
-    band_members = [["Guitar", "Person1"], ["Bass", "Person2"], ["Trumpet", "Person3"], ["Piano", "Person4"], ["Sax", "Person5"], ["Vocals", "Person6"]]
+    band_members = get_band_members(1)
+    print(band_members)
     return render_template('band.html', band_info=band_info, band_members=band_members)
 @app.route("/login", methods=['GET', 'POST'])
 def login():
